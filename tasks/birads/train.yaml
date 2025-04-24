@@ -1,0 +1,37 @@
+name: BiradsClassification
+seed: 1234
+track: &track False
+model:
+  class_name: MobileNetV2Custom
+  module_name: src.models.mobilenetv2
+  parameters:
+
+dataloader:
+  class_name: DefaultDataloader
+  module_name: src.data.loaders.default
+  parameters:
+    data_dir: ./data
+    image_size: 224
+    augment_type: geometric
+    batch_size: 8
+    num_workers: 4
+    debug: True
+
+trainer:
+  class_name: BiradsTrainer
+  module_name: tasks.birads.trainer
+  parameters:
+    num_epochs: 10
+    early_stopping_patience: 5
+    lr_scheduler: plateau
+    lr: 0.0001
+    weight_decay: 0.00001
+    track: *track
+    loss:
+      class_name: CrossEntropyLoss
+      module_name: torch.nn
+      parameters:
+
+experiment:
+  class_name: BaseExperiment
+  module_name: src.core.experiment
