@@ -7,8 +7,8 @@ model:
   parameters:
 
 dataloader:
-  class_name: DefaultDataloader
-  module_name: src.data.loaders.default
+  class_name: CustomImageDataloader
+  module_name: src.data.loaders.custom
   parameters:
     data_dir: ./data
     image_size: 224
@@ -21,8 +21,8 @@ trainer:
   class_name: BiradsTrainer
   module_name: tasks.birads.trainer
   parameters:
-    num_epochs: 10
-    early_stopping_patience: 5
+    num_epochs: 20
+    early_stopping_patience: 10
     lr_scheduler: plateau
     lr: 0.0001
     weight_decay: 0.00001
