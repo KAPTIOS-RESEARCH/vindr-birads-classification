@@ -3,6 +3,7 @@ from torch import nn
 from tqdm import tqdm
 from src.core.trainer import BaseTrainer
 
+
 class BiradsTrainer(BaseTrainer):
 
     def __init__(self, model: nn.Module, parameters: dict, device: str):
@@ -13,7 +14,7 @@ class BiradsTrainer(BaseTrainer):
     def train(self, train_loader):
         self.model.train()
         train_loss = 0.0
-        
+
         with tqdm(train_loader, leave=False, desc="Running training phase") as pbar:
             for data, targets in train_loader:
                 data, targets = data.to(self.device), targets.to(self.device)
@@ -36,11 +37,12 @@ class BiradsTrainer(BaseTrainer):
         with torch.no_grad():
             with tqdm(val_loader, leave=False, desc="Running testing phase") as pbar:
                 for data, targets in val_loader:
-                    data, targets = data.to(self.device), targets.to(self.device)
+                    data, targets = data.to(
+                        self.device), targets.to(self.device)
                     outputs = self.model(data)
                     loss = self.criterion(outputs, targets)
                     test_loss += loss.item()
-                    all_preds.append(outputs)
+                    all_preds.append(outputs.cpu())
                     all_targets.append(targets.cpu())
                     pbar.update(1)
 

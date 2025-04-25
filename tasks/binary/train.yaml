@@ -1,0 +1,34 @@
+name: VindrBinaryClassification
+seed: 1234
+track: &track True
+model:
+  class_name: EfficientNetB0
+  module_name: src.models.efficientnet
+  parameters:
+
+dataloader:
+  class_name: VindrRemoteDataloader
+  module_name: src.data.loaders.vindr_remote
+  parameters:
+    batch_size: 8
+    num_workers: 4
+    debug: False
+
+trainer:
+  class_name: BinaryTrainer
+  module_name: tasks.binary.trainer
+  parameters:
+    num_epochs: 20
+    early_stopping_patience: 10
+    lr_scheduler: plateau
+    lr: 0.0001
+    weight_decay: 0.00001
+    track: *track
+    loss:
+      class_name: BCEWithLogitsLoss
+      module_name: torch.nn
+      parameters:
+
+experiment:
+  class_name: BaseExperiment
+  module_name: src.core.experiment
